@@ -1,44 +1,45 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart'; // Import the DatabaseHelper class
-import 'user.dart'; // Import the User class
+import 'dest.dart'; // Import the Dest class
 
 void main() async {
-  // Initialize the database and insert users
+  // Initialize the database and insert dests
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseHelper.instance.initDb();
-  await DatabaseHelper.instance.initializeUsers();
+  await DatabaseHelper.instance.initializeDests();
 
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'User Management',
-      home: UserList(),
-    );
+    return MaterialApp(title: 'Dest Management', home: DestList());
   }
 }
 
-class UserList extends StatefulWidget {
+class DestList extends StatefulWidget {
+  const DestList({super.key});
+
   @override
-  _UserListState createState() => _UserListState();
+  _DestListState createState() => _DestListState();
 }
 
-class _UserListState extends State<UserList> {
-  List<User> _users = [];
+class _DestListState extends State<DestList> {
+  List<Dest> _dests = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchUsers();
+    _fetchDests();
   }
 
-  Future<void> _fetchUsers() async {
-    final userMaps = await DatabaseHelper.instance.queryAllUsers();
+  Future<void> _fetchDests() async {
+    final destMaps = await DatabaseHelper.instance.queryAllDests();
     setState(() {
-      _users = userMaps.map((userMap) => User.fromMap(userMap)).toList();
+      _dests = destMaps.map((destMap) => Dest.fromMap(destMap)).toList();
     });
   }
 
@@ -46,16 +47,13 @@ class _UserListState extends State<UserList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('GFG User List'),
+        title: Text('GFG Dest List'),
         backgroundColor: Colors.lightGreen,
       ),
       body: ListView.builder(
-        itemCount: _users.length,
+        itemCount: _dests.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_users[index].username),
-            subtitle: Text(_users[index].email),
-          );
+          return ListTile(title: Text(_dests[index].title));
         },
       ),
     );

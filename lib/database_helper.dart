@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'user.dart';
+import 'dest.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._instance();
@@ -15,51 +15,60 @@ class DatabaseHelper {
 
   Future<Database> initDb() async {
     String databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'geeksforgeeks.db');
+    String path = join(databasesPath, 'destwisata.db');
 
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   Future _onCreate(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE gfg_users (
-        id INTEGER PRIMARY KEY,
-        username TEXT,
-        email TEXT
+      CREATE TABLE destination (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT,
+        desc TEXT,
+        locate TEXT,
+        photo TEXT
       )
     ''');
   }
 
-  Future<int> insertUser(User user) async {
+  Future<int> insertDest(Dest dest) async {
     Database db = await instance.db;
-    return await db.insert('gfg_users', user.toMap());
+    return await db.insert('destination', dest.toMap());
   }
 
-  Future<List<Map<String, dynamic>>> queryAllUsers() async {
+  Future<List<Map<String, dynamic>>> queryAllDests() async {
     Database db = await instance.db;
-    return await db.query('gfg_users');
+    return await db.query('destination');
   }
 
-  Future<int> updateUser(User user) async {
+  Future<int> updateDest(Dest dest) async {
     Database db = await instance.db;
-    return await db.update('gfg_users', user.toMap(), where: 'id = ?', whereArgs: [user.id]);
+    return await db.update(
+      'destination',
+      dest.toMap(),
+      where: 'id = ?',
+      whereArgs: [dest.id],
+    );
   }
 
-  Future<int> deleteUser(int id) async {
+  Future<int> deleteDest(int id) async {
     Database db = await instance.db;
-    return await db.delete('gfg_users', where: 'id = ?', whereArgs: [id]);
+    return await db.delete('destination', where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<void> initializeUsers() async {
-    List<User> usersToAdd = [
-      User(username: 'John', email: 'john@example.com'),
-      User(username: 'Jane', email: 'jane@example.com'),
-      User(username: 'Alice', email: 'alice@example.com'),
-      User(username: 'Bob', email: 'bob@example.com'),
+  Future<void> initializeDests() async {
+    List<Dest> destsToAdd = [
+      Dest(
+        title: 'lorem',
+        desc: 'lorem ipsum sadasd',
+        locate: 'lorem',
+        photo: 'lorem',
+      ),
     ];
 
-    for (User user in usersToAdd) {
-      await insertUser(user);
+    for (Dest dest in destsToAdd) {
+      await insertDest(dest);
     }
   }
 }
