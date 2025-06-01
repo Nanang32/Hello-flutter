@@ -47,7 +47,7 @@ class _DestListState extends State<DestList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('GFG Dest List'),
+        title: Text('Content Base Locations'),
         backgroundColor: Colors.lightGreen,
       ),
       body: ListView.builder(
