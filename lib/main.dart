@@ -53,7 +53,12 @@ class _DestListState extends State<DestList> {
       body: ListView.builder(
         itemCount: _dests.length,
         itemBuilder: (context, index) {
-          return ListTile(title: Text(_dests[index].title));
+          return ListTile(
+            title: Text(_dests[index].title)
+            onTap: () {
+              print("tapped on list");
+            }, // Handle your onTap here. 
+            );
         },
       ),
     );
