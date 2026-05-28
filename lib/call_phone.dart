@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatelessWidget {
 
-  // FUNGSI PANGGILAN
+  // FUNGSI TELEPON
   Future<void> panggilNomor() async {
 
     final Uri telepon = Uri(
@@ -30,18 +30,17 @@ class HomePage extends StatelessWidget {
     await launchUrl(telepon);
   }
 
-  // FUNGSI SMS
-  Future<void> kirimPesan() async {
+  // FUNGSI WHATSAPP
+  Future<void> bukaWhatsApp() async {
 
-    final Uri sms = Uri(
-      scheme: 'sms',
-      path: '08123456789',
-      queryParameters: {
-        'body': 'Halo Admin, saya ingin bertanya.'
-      },
+    final Uri whatsapp = Uri.parse(
+      'https://wa.me/6281343535034?text=Halo%20Admin'
     );
 
-    await launchUrl(sms);
+    await launchUrl(
+      whatsapp,
+      mode: LaunchMode.externalApplication,
+    );
   }
 
   @override
@@ -50,7 +49,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text("Fitur Panggilan dan SMS"),
+        title: Text("Telepon dan WhatsApp"),
       ),
 
       body: Center(
@@ -70,9 +69,9 @@ class HomePage extends StatelessWidget {
 
             ElevatedButton(
 
-              onPressed: kirimPesan,
+              onPressed: bukaWhatsApp,
 
-              child: Text("Kirim SMS"),
+              child: Text("Chat WhatsApp"),
             ),
 
           ],
