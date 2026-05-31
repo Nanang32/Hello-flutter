@@ -1,66 +1,33 @@
+// ============================================================
+// BAGIAN 0: ENTRY POINT APLIKASI
+// File: lib/main.dart
+//
+// Konsep yang dipelajari:
+// - void main(): titik masuk program Dart
+// - runApp(): menjalankan aplikasi Flutter
+// - MaterialApp: root widget dengan konfigurasi tema
+// ============================================================
+
 import 'package:flutter/material.dart';
-import 'database_helper.dart'; // Import the DatabaseHelper class
-import 'dest.dart'; // Import the Dest class
+import 'screens/home_screen.dart';
+import 'utils/app_theme.dart';
 
-void main() async {
-  // Initialize the database and insert dests
-  WidgetsFlutterBinding.ensureInitialized();
-  await DatabaseHelper.instance.initDb();
-  await DatabaseHelper.instance.initializeDests();
-
-  runApp(MyApp());
+void main() {
+  // WidgetsFlutterBinding.ensureInitialized() tidak diperlukan karena
+  // kita tidak menggunakan plugin native (sqflite sudah dihapus)
+  runApp(const WisataApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class WisataApp extends StatelessWidget {
+  const WisataApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Dest Management', home: DestList());
-  }
-}
-
-class DestList extends StatefulWidget {
-  const DestList({super.key});
-
-  @override
-  _DestListState createState() => _DestListState();
-}
-
-class _DestListState extends State<DestList> {
-  List<Dest> _dests = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchDests();
-  }
-
-  Future<void> _fetchDests() async {
-    final destMaps = await DatabaseHelper.instance.queryAllDests();
-    setState(() {
-      _dests = destMaps.map((destMap) => Dest.fromMap(destMap)).toList();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Content Base Locations'),
-        backgroundColor: Colors.lightGreen,
-      ),
-      body: ListView.builder(
-        itemCount: _dests.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_dests[index].title),
-            onTap: () {
-              print("tapped on list");
-            }, // Handle your onTap here.
-          );
-        },
-      ),
+    return MaterialApp(
+      title: 'Wisata Nusantara',
+      debugShowCheckedModeBanner: false,   // sembunyikan banner "DEBUG"
+      theme: AppTheme.theme,               // tema dari AppTheme
+      home: const HomeScreen(),            // halaman pertama
     );
   }
 }
